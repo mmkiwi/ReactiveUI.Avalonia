@@ -3,6 +3,7 @@
     <TargetFrameworks>$(AvaloniaTargetFrameworks)</TargetFrameworks>
     <Nullable>enable</Nullable>
     <LangVersion>preview</LangVersion>
+    <IsAotCompatible>true</IsAotCompatible>
     <NoWarn>$(NoWarn);SA1633;SA1518</NoWarn>
     <PackageDescription>Contains the ReactiveUI platform specific extensions for Avalonia</PackageDescription>
     <PackageTags>mvvm;reactiveui;rx;reactive extensions;observable;LINQ;events;frp;avalonia;net;netcore</PackageTags>

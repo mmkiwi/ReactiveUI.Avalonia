@@ -31,7 +31,7 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
     /// <returns>An integer representing the binding affinity score for the specified type. Returns 0 if the type is not an input
     /// element; returns 6 if the type is an input element with an event target; returns 10 if the type is a command
     /// source input element without an event target.</returns>
-    public int GetAffinityForObject<T>(bool hasEventTarget)
+    public int GetAffinityForObject<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.PublicProperties)] T>(bool hasEventTarget)
     {
         var isInputElement = typeof(InputElement).IsAssignableFrom(typeof(T));
         if (!isInputElement)
@@ -67,6 +67,7 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
     /// <returns>An IDisposable that, when disposed, unbinds the command and command parameter from the target object.</returns>
     /// <exception cref="ArgumentNullException">Thrown if either the command or target parameter is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the target object does not implement both InputElement and ICommandSource.</exception>
+    [RequiresUnreferencedCode("String/reflection-based event binding may require members removed by trimming.")]
     public IDisposable? BindCommandToObject<
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.PublicEvents | DynamicallyAccessedMemberTypes.NonPublicEvents)] T>(
         ICommand? command,
@@ -115,6 +116,7 @@ internal class AvaloniaCreatesCommandBinding : ICreatesCommandBinding
     /// unsuccessful.</returns>
     /// <exception cref="ArgumentNullException">Thrown if either the command or target parameter is null.</exception>
     /// <exception cref="InvalidOperationException">Thrown if the target is not an InputElement, or if the specified event is not found on the target object.</exception>
+    [RequiresUnreferencedCode("String/reflection-based event binding may require members removed by trimming.")]
     public IDisposable? BindCommandToObject<T, TEventArgs>(
         ICommand? command,
         T? target,

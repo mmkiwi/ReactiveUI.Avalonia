@@ -3,6 +3,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace ReactiveUI.Avalonia;
 
 /// <summary>
@@ -71,6 +73,8 @@ public static class AppBuilderExtensions
     /// <param name="assemblies">An array of assemblies containing ReactiveUI view types to register. If null or empty, no views are registered.</param>
     /// <returns>The application builder instance, enabling further configuration.</returns>
     /// <exception cref="ArgumentNullException">Thrown if <paramref name="builder"/> is null.</exception>
+    [RequiresUnreferencedCode("This uses reflection to determine view model types at runtime, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("Uses reflection which is incompatible with AOT compilation.")]
     public static AppBuilder RegisterReactiveUIViews(this AppBuilder builder, params Assembly[] assemblies)
     {
         if (builder is null)
@@ -105,6 +109,8 @@ public static class AppBuilderExtensions
     /// <typeparam name="TMarker">The type used to identify the assembly from which ReactiveUI views will be registered.</typeparam>
     /// <param name="builder">The application builder to configure with ReactiveUI view registrations.</param>
     /// <returns>The same <see cref="AppBuilder"/> instance, enabling fluent configuration.</returns>
+    [RequiresUnreferencedCode("This uses reflection to determine view model types at runtime, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("Uses reflection which is incompatible with AOT compilation.")]
     public static AppBuilder RegisterReactiveUIViewsFromAssemblyOf<TMarker>(this AppBuilder builder)
         => RegisterReactiveUIViews(builder, typeof(TMarker).Assembly);
 
@@ -118,6 +124,8 @@ public static class AppBuilderExtensions
     /// <param name="builder">The application builder to configure with ReactiveUI view registrations.</param>
     /// <returns>The same application builder instance, with ReactiveUI views registered if the entry assembly is available;
     /// otherwise, the original builder.</returns>
+    [RequiresUnreferencedCode("This uses reflection to determine view model types at runtime, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("Uses reflection which is incompatible with AOT compilation.")]
     public static AppBuilder RegisterReactiveUIViewsFromEntryAssembly(this AppBuilder builder)
     {
         var entry = Assembly.GetEntryAssembly();
@@ -197,6 +205,8 @@ public static class AppBuilderExtensions
     /// instance created via Activator. Duplicate assemblies are ignored.</remarks>
     /// <param name="resolver">The dependency resolver in which the discovered view types will be registered.</param>
     /// <param name="assemblies">An array of assemblies to scan for view types implementing IViewFor{T}.</param>
+    [RequiresUnreferencedCode("This class uses reflection to determine view model types at runtime, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("Uses reflection which is incompatible with AOT compilation.")]
     private static void RegisterViewsInternal(IMutableDependencyResolver resolver, Assembly[] assemblies)
     {
         foreach (var asm in assemblies.Distinct())

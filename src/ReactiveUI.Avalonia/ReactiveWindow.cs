@@ -34,9 +34,10 @@ public class ReactiveWindow<TViewModel> : Window, IViewFor<TViewModel>
     /// model.</remarks>
     public ReactiveWindow()
     {
-        // This WhenActivated block calls ViewModel's WhenActivated
-        // block if the ViewModel implements IActivatableViewModel.
-        this.WhenActivated(disposables => { });
+        this.GetObservable(ViewModelProperty).Subscribe(vm =>
+        {
+            this.EnsureActivated(ViewModelProperty);
+        });
     }
 
     /// <inheritdoc cref="IViewFor{TViewModel}.ViewModel"/>

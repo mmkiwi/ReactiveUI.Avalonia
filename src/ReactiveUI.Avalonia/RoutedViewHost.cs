@@ -3,6 +3,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Disposables.Fluent;
 
 namespace ReactiveUI.Avalonia;
@@ -76,7 +77,7 @@ public class RoutedViewHost : TransitioningContentControl, IActivatableView, IEn
     /// cref="RoutedViewHost"/>. It is typically used in XAML to set or bind the content shown when no view is available
     /// for the current view model.</remarks>
     public static readonly StyledProperty<object?> DefaultContentProperty =
-        ViewModelViewHost.DefaultContentProperty.AddOwner<RoutedViewHost>();
+        AvaloniaProperty.Register<RoutedViewHost, object?>(nameof(DefaultContent));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="RoutedViewHost"/> class and sets up reactive navigation between view models and views.
@@ -86,6 +87,8 @@ public class RoutedViewHost : TransitioningContentControl, IActivatableView, IEn
     /// appropriate view model. This enables dynamic view navigation in response to application state changes. The
     /// constructor is typically used in reactive UI scenarios where view navigation is managed by a routing
     /// mechanism.</remarks>
+    [RequiresUnreferencedCode("This class uses reflection to determine view model types at runtime through ViewLocator, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("ViewLocator.ResolveView uses reflection which is incompatible with AOT compilation.")]
     public RoutedViewHost() =>
         this.WhenActivated(disposables =>
         {
@@ -153,6 +156,8 @@ public class RoutedViewHost : TransitioningContentControl, IActivatableView, IEn
     /// shown.</param>
     /// <param name="contract">An optional contract string used to distinguish between multiple views for the same view model type. If null,
     /// the default view resolution is used.</param>
+    [RequiresUnreferencedCode("This class uses reflection to determine view model types at runtime through ViewLocator, which may be incompatible with trimming.")]
+    [RequiresDynamicCode("ViewLocator.ResolveView uses reflection which is incompatible with AOT compilation.")]
     private void NavigateToViewModel(object? viewModel, string? contract)
     {
         if (Router == null)

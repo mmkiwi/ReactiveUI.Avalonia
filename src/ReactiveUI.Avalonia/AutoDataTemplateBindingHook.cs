@@ -18,9 +18,8 @@ public class AutoDataTemplateBindingHook : IPropertyBindingHook
     private static readonly FuncDataTemplate DefaultItemTemplate = new FuncDataTemplate<object>(
      (_, _) =>
      {
-         var control = new ViewModelViewHost();
+         var control = new ContentControl();
          var context = control.GetObservable(StyledElement.DataContextProperty);
-         control.Bind(ViewModelViewHost.ViewModelProperty, context);
          control.HorizontalContentAlignment = HorizontalAlignment.Stretch;
          control.VerticalContentAlignment = VerticalAlignment.Stretch;
          return control;

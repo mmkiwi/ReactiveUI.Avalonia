@@ -3,6 +3,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for full license information.
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace ReactiveUI.Avalonia;
 
 /// <summary>
@@ -16,6 +18,7 @@ namespace ReactiveUI.Avalonia;
 internal class AvaloniaObjectObservableForProperty : ICreatesObservableForProperty
 {
     /// <inheritdoc/>
+    [RequiresUnreferencedCode("Uses reflection over runtime types which is not trim- or AOT-safe.")]
     public int GetAffinityForObject(Type type, string propertyName, bool beforeChanged = false)
     {
         if (!typeof(AvaloniaObject).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()))
@@ -27,6 +30,7 @@ internal class AvaloniaObjectObservableForProperty : ICreatesObservableForProper
     }
 
     /// <inheritdoc/>
+    [RequiresUnreferencedCode("Uses reflection over runtime types which is not trim- or AOT-safe.")]
     public IObservable<IObservedChange<object, object?>> GetNotificationForProperty(object sender, System.Linq.Expressions.Expression expression, string propertyName, bool beforeChanged = false, bool suppressWarnings = false)
     {
 #if NET6_0_OR_GREATER
